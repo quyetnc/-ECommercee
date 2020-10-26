@@ -1,0 +1,50 @@
+﻿.card-img-top1 {
+    display: block !important;
+    height: auto !important;
+    margin: auto !important;
+    cursor: pointer !important;
+    max-width: 100% !important;
+}
+
+.col-6 {
+    padding-top: 20px;
+}
+
+a {
+    color: white !important;
+}
+
+button {
+    margin: 5px;
+}
+
+.thongtinchitiet {
+    margin: 10px;
+}
+
+.anh-tin-tuc {
+    float: left;
+    width: 100px;
+    height: 60px;
+    margin-right: 10px;
+}
+.fas{
+    color: black;
+}
+.btn-warning {
+    color: #fff;
+}
+.name_info {
+    overflow: hidden;
+    font-size: 24px;
+    color: #333;
+    line-height: 40px;
+}
+.info_price {
+    display: inline-block;
+    overflow: hidden;
+    font-size: 24px;
+    color: red!important;
+    vertical-align: middle;
+    margin-right: 10px;
+}

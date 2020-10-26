@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8e7e2bcbf4e74964b9502eb6b4efe9de" Name="Diagram1" ZoomLevel="36">
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.CATEGORY_NEWS" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.CATEGORY_PRODUCT" Width="1.5" PointX="8" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.COMMENT_PRODUCT" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.CUSTOMER" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.GIFTCODE" Width="1.5" PointX="3" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.INFO" Width="1.5" PointX="10.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.NEWS" Width="1.5" PointX="7.5" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.ORDER" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.ORDER_HISTORY" Width="1.5" PointX="7.5" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PAYMENT_METHOD" Width="1.5" PointX="3" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PAYMENT_STATUS" Width="1.5" PointX="3" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PRODUCT" Width="1.5" PointX="10.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PRODUCT_IMG" Width="1.5" PointX="12.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PRODUCT_INFO" Width="1.5" PointX="12.5" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PRODUCT_ORDER" Width="1.5" PointX="15.5" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PRODUCT_PROMOTION" Width="1.5" PointX="12.5" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.PROMOTION" Width="1.5" PointX="10.25" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.REVIEW_PRODUCT" Width="1.5" PointX="15.5" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.ROLE" Width="1.5" PointX="0.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="THUONGMAIDIENTUModel.USER" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__CATEGORY___IdUse__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__CATEGORY___IdUse__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__NEWS__IdCategory__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT__IdCateg__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT__IdCateg__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdCus__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdCus__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdPro__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdPro__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdUse__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__COMMENT_P__IdUse__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdCustome__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdCustome__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdCus__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdCus__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdCode__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdCode__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_I__IdInf__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_I__IdInf__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK_NEWS_USER" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdPayment__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdPayment__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdStatus__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdStatus__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdUser__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER__IdUser__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdOrd__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdOrd__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_O__IdOrd__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_O__IdOrd__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdSta__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdSta__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdUse__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__ORDER_HIS__IdUse__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT__IdUser__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT__IdUser__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_I__IdPro__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_I__IdPro__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_I__IdPro__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_O__IdPro__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_O__IdPro__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_P__IdPro__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_P__IdPro__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdPro__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdPro__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_P__IdPro__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__PRODUCT_P__IdPro__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdUse__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__REVIEW_PR__IdUse__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__USER__IdRole__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="THUONGMAIDIENTUModel.FK__USER__IdRole__66603565" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

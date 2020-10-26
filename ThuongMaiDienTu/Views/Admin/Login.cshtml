@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Đăng nhập hệ thống</h1>
+<form method="post" action="#   ">
+    @if (!String.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+    <div class="form-group">
+        <input type="text" class="form-control form-control-user" name="username" placeholder="Tài khoản">
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control form-control-user" name="password" placeholder="Mật khẩu">
+    </div>
+    <button type="submit" class="btn btn-primary btn-user btn-block">
+        Đăng nhập
+    </button>
+
+</form>

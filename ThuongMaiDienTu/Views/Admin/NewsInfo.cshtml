@@ -1,0 +1,99 @@
+﻿@model ThuongMaiDienTu.NEWS
+
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="~/Scripts/ckeditor.js"></script>
+
+@using (Html.BeginForm("NewsInfo", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    Html.EnableClientValidation(true);
+
+    if (!String.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+
+    }
+
+    if (!String.IsNullOrEmpty(ViewBag.Success))
+    {
+        <div class="alert alert-primary" role="alert">
+            @ViewBag.Success
+        </div>
+
+    }
+<div class="form-horizontal">
+    @if (ViewBag.Id == null)
+    {
+        @Html.HiddenFor(model => model.IdNews)
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.IdNews, new { @Value = @ViewBag.Id })
+    }
+
+    <div class="form-group">
+        <lable class="control-label">Tiêu đề bài viết</lable>
+        <div>
+            @Html.EditorFor(model => model.NewsTitle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NewsTitle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <lable class="control-label">Danh mục</lable>
+        <div>
+            <select name="IdCategory" class="form-control">
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.CATEGORY_NEWS.ToList())
+                    {
+                        <option value="@item.IdCategory">@item.CategoryName</option>
+                    }
+                }
+            </select>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <lable class="control-label">Hình ảnh</lable>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="file" accept="image/*">
+            <label class="custom-file-label">Hình đại diện bài viết</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <lable class="control-label">Mô tả ngắn</lable>
+        <div>
+            @Html.TextAreaFor(model => model.NewsSumary, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NewsSumary, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <lable class="control-label">Bài viết</lable>
+        <div>
+            @Html.TextAreaFor(model => model.NewsDetail, new { @class = "form-control", @id = "NewsDetail" })
+            @Html.ValidationMessageFor(model => model.NewsDetail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-lg btn-primary">Lưu lại</button>
+    </div>
+</div>
+}
+
+<script>
+    CKEDITOR.replace('NewsDetail');
+</script>

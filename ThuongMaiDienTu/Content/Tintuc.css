@@ -1,0 +1,44 @@
+﻿.viewmore {
+    display: block;
+    overflow: hidden;
+    padding: 10px 0;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #288ad6;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.img-tintuc {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.title-tintuc {
+    display: block;
+    overflow: hidden;
+    line-height: 53px;
+    font-size: 45px;
+    color: #333;
+    font-family: 'Roboto Condensed',sans-serif;
+    font-weight: 600;
+    width: 800px;
+    margin: auto;
+}
+
+.body-tin {
+    width: 600px;
+    margin: 20px auto;
+    font-size: 16px;
+    color: #333;
+    line-height: 28px;
+}
+
+.item-tintuc {
+    margin: 10px 0 15px 15px;
+    padding: 10px;
+}

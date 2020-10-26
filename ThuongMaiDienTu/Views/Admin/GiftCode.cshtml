@@ -1,0 +1,163 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách mã giảm giá</h2>
+
+<div class="text-right">
+    <button type="button" class="btn btn-primary" onclick="CreateNewGiftcode()"><i class="fas fa-plus"></i> Tạo mã giảm giá</button>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Mã giảm giá</th>
+                    <th scope="col">Giá trị</th>
+                    <th scope="col">Tình trạng</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.GIFTCODEs.ToList())
+                    {
+                        var giaTri = String.Format("{0:N0}", item.Discount);
+                        string tinhTrang = item.Status == true ? "Đã dùng" : "Chưa dùng";
+
+                        <tr>
+                            <td>@item.Code</td>
+                            <td>@giaTri</td>
+                            <td>@tinhTrang</td>
+                            <th>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary" onclick="EditGiftcode(@item.IdCode)"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteGiftcode(@item.IdCode)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div id="create-Giftcode-model" class="modal fade create-Giftcode-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin mã giảm giá</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label">Mã giảm giá</label>
+                        <input type="text" class="form-control" name="md-code">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Giá trị</label>
+                        <input type="number" class="form-control" name="md-discount">
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+    var id_code = 0;
+    function EditGiftcode(id) {
+        id_code = id;
+
+        $.ajax({
+            url: '/Ajax/GetGiftcode/' + id_code,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: id_code,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='md-code']").val(json.Code);
+            $("[name='md-discount']").val(json.Discount);
+            $('#create-Giftcode-model').modal('show');
+        });
+
+    }
+
+    function DeleteGiftcode(id) {
+        if (!confirm("Bạn có thực sự muốn xóa mã giảm giá này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteGiftcode/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function CreateNewGiftcode() {
+        id_code = 0;
+        $("[name='md-code']").val("");
+        $("[name='md-discount']").val("");
+        $('#create-Giftcode-model').modal('show');
+    }
+
+    function SaveInfo() {
+        var code = $("[name='md-code']").val();
+        var discount = $("[name='md-discount']").val();
+        if (code == '' || discount == '') {
+            alert('Vui lòng nhập đủ thông tin');
+            return;
+        }
+
+
+
+        $.ajax({
+            url: '/Ajax/EditGiftcode',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdCode: id_code,
+                Code: code,
+                Discount: discount
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+
+    }
+</script>

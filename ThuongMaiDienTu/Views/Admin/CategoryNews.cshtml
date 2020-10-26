@@ -1,0 +1,158 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách danh mục bài viết</h2>
+
+<div class="text-right">
+    <button type="button" class="btn btn-primary" onclick="CreateNewCategory()"><i class="fas fa-plus"></i> Tạo danh mục</button>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Tên danh mục</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.CATEGORY_NEWS.ToList())
+                    {
+                        <tr>
+                            <td><i class="@item.CategoryIcon"></i></td>
+                            <td>@item.CategoryName</td>
+                            <th>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary" onclick="EditCategory(@item.IdCategory)"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteCategory(@item.IdCategory)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div id="create-category-model" class="modal fade create-category-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin danh mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label">Hình ảnh</label>
+                        <input type="text" class="form-control" name="md-icon">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" name="md-name">
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+    var id_category = 0;
+    function EditCategory(id) {
+        id_category = id;
+
+        $.ajax({
+            url: '/Ajax/GetCategoryNews/' + id,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: id_category,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='md-icon']").val(json.Icon);
+            $("[name='md-name']").val(json.Name);
+            $('#create-category-model').modal('show');
+        });
+
+    }
+
+    function DeleteCategory(id) {
+        if (!confirm("Bạn có thực sự muốn xóa danh mục này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteCategoryNews/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function CreateNewCategory() {
+        id_category = 0;
+        $("[name='md-icon']").val("");
+        $("[name='md-name']").val("");
+        $('#create-category-model').modal('show');
+    }
+
+    function SaveInfo() {
+        var name = $("[name='md-name']").val();
+        var icon = $("[name='md-icon']").val();
+        if (name == '' || icon == '') {
+            alert('Vui lòng nhập đủ thông tin');
+            return;
+        }
+
+
+
+        $.ajax({
+            url: '/Ajax/EditCategoryNews',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdCategory: id_category,
+                CategoryName: name,
+                CategoryIcon: icon
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+
+    }
+</script>

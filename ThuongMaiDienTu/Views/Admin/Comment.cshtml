@@ -1,0 +1,115 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách bình luận</h2>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Nội dung</th>
+                    <th scope="col">Chuyên mục</th>
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">Ngày đăng</th>
+                    <th scope="col">Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.COMMENT_PRODUCT.OrderByDescending(x => x.IdComment).ToList())
+                    {
+                        var ngayDang = (item.CommentDate ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm");
+                        string trangThai = item.CommentStatus == true ? "Đã duyệt" : "Chưa duyệt";
+                <tr>
+                    <td>@item.CommentContent</td>
+                    <td>@item.PRODUCT.ProductName</td>
+                    <td>@item.CUSTOMER.CustomerName<br />@item.CUSTOMER.CustomerPhone<br />@item.CUSTOMER.CustomerEmail</td>
+                    <td>@ngayDang</td>
+                    <td>@trangThai</td>
+                    <th>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary" onclick="AccpetComment(@item.IdComment)"><i class="fas fa-check"></i></button>
+                            <button type="button" class="btn btn-danger" onclick="DeleteComment(@item.IdComment)"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </th>
+                </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+   $(document).ready(function () {
+        $('#myTable').DataTable({
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value="">- Lọc nội dung -</option></select>')
+                        .appendTo($(column.header()))
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        });
+    });
+
+  
+
+    function DeleteComment(id) {
+        if (!confirm("Bạn có thực sự muốn xóa bình luận này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteComment/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    
+    function AccpetComment(id) {
+        if (!confirm("Bạn có thực sự muốn duyệt bình luận này không?")) return;
+        $.ajax({
+            url: '/Ajax/AccpetComment/' + id,
+            type: 'POST',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Duyệt bình luận thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+        }
+
+</script>

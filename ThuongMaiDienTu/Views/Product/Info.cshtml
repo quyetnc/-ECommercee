@@ -1,0 +1,195 @@
+﻿@model ThuongMaiDienTu.PRODUCT
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Item.css" rel="stylesheet" />
+<link href="~/Content/Binhluan.css" rel="stylesheet" />
+<br />
+<stye>
+
+</stye>
+<div class="container">
+    <div class="row">
+
+        @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+        {
+            var product = db.PRODUCTs.Where(x => x.IdProduct == Model.IdProduct).FirstOrDefault();
+
+            <div class="col-6">
+                <h5 class="card-title name_info">@product.ProductName</h5>
+                <div class="card mt-4">
+
+                    <a href="#"><img style="max-width: 100%;" class="card-img-top product-img" src="~/img/product/@product.PRODUCT_IMG.FirstOrDefault().Filename" alt="@product.PRODUCT_IMG.FirstOrDefault().ImgAlt"></a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card-body">
+                    <h4 class="card-price info_price"> @String.Format("{0:0,0}", product.ProductPrice) VNĐ</h4>
+                    <p class="card-text">
+                        @product.ProductSumary
+                    </p>
+                    <hr />
+                    <div class="btn-tinhtien">
+                        <button type="button" class="btn btn-warning btn-lg btn-block" onclick="AddCart()">
+                            Đặt hàng <i class="fa fa-shopping-bag"></i>
+                            <h6>Thêm vào giỏ hàng</h6>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="BuyNow()">Mua ngay <i class="fa fa-dollar-sign"></i> <h6>Giao hàng tận nhà</h6></button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    Đăc điểm nổi bật
+                </div>
+                <!-- /thong tin san pham-->
+                <div class="thongtinchitiet">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox">
+                                    @{
+                                        string sActive = "active";
+                                    }
+
+                                    @foreach (var item in product.PRODUCT_IMG.ToList())
+                                    {
+                                        <div class="carousel-item @sActive">
+                                            <img class="d-block img-fluid" src="~/img/product/@item.Filename" alt="@item.ImgAlt">
+                                        </div>
+
+                                        sActive = "";
+                                    }
+
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+
+                            @Html.Raw(product.ProductDetail)
+
+                            <div class="form-group">
+                                <h3>Bình luận</h3>
+                                <textarea class="form-control" rows="3"></textarea>
+                                <button type="button" class="btn btn-primary btn-block">Gửi</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="form-group">
+                                    <lable class="control-label">Thông số sản phẩm</lable>
+                                    <div>
+
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                @{
+                                                    int i = 0;
+                                                    string tieude = "";
+                                                    foreach (var info in db.INFOes.OrderBy(x => x.InfoCategory).ToList())
+                                                    {
+                                                        string thongtin = "";
+                                                        int maSP = Model.IdProduct;
+                                                        var thongtinDB = db.PRODUCT_INFO.Where(x => x.IdInfo == info.IdInfo && x.IdProduct == maSP).FirstOrDefault();
+                                                        if (thongtinDB != null)
+                                                        {
+                                                            thongtin = thongtinDB.Info;
+                                                        }
+                                                        if (String.IsNullOrEmpty(thongtin))
+                                                        {
+                                                            continue;
+                                                        }
+                                                        if (!tieude.Equals(info.InfoCategory))
+                                                        {
+                                                            tieude = info.InfoCategory;
+
+                                                            <tr>
+                                                                <td colspan="2"><b>@tieude</b></td>
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <td>@info.InfoName</td>
+                                                            <td>
+                                                                @thongtin
+                                                            </td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="newlist d-sm-none d-md-block">
+                                <h3>Tin tức về @product.ProductName</h3>
+                                <div class="col-2">
+                                    <img class="anh-tin-tuc"
+                                         src="~/img/product/htc-u11-iphone-vergleich-rcm992x0_992x558-300x200.jpg">
+                                </div>
+                                <div class="col-8">
+                                    <p>Đọ tốc độ HTC U11 và iPhone 7 Plus: Snapdragon 835 so tài Apple A10</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- /.col-lg-9 -->
+        
+        }
+    </div>
+</div>
+
+
+
+<script>
+    function BuyNow() {
+     $.ajax({
+            url: '/Ajax/AddCart/@Model.IdProduct',
+            type: 'GET',
+            dataType: 'text'
+     }).done(function (ketqua) {
+           location.href = "/Cart";
+                return;
+        });
+
+    }
+
+    function AddCart() {
+             $.ajax({
+            url: '/Ajax/AddCart/@Model.IdProduct',
+            type: 'GET',
+            dataType: 'text'
+     }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            if (json.Success == "1") {
+                alert("Thêm vào giỏ hàng thành công");
+                $("#SoLuongGioHang").html(json.Message);
+                return;
+            }
+            alert(json.Message);
+        });
+    }
+</script>

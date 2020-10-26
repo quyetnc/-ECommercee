@@ -1,0 +1,326 @@
+﻿@model ThuongMaiDienTu.ORDER
+@{
+    /**/
+
+    ViewBag.Title = "OrderInfo";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">Thông tin</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">Lịch sử chỉnh sửa</a>
+    </li>
+
+</ul>
+
+
+
+@using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+{
+    var order = db.ORDERs.Where(x => x.IdOrder == Model.IdOrder).FirstOrDefault();
+    <div class="tab-content">
+        <div id="home" class="tab-pane active">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Mã đơn hàng
+                            </dt>
+
+                            <dd>
+                                @order.IdOrder
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Tình trạng
+                            </dt>
+
+                            <dd>
+                                @order.PAYMENT_STATUS.StatusName
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Giftcode
+                            </dt>
+
+                            <dd>
+                                @if (order.IdCode == null)
+                                {
+                                    <p>Không có</p>
+                                }
+                                else
+                                {
+                                    string giamGia = String.Format("{0:N0}", order.GIFTCODE.Discount);
+                                    <p>
+                                        @order.GIFTCODE.Code<br>
+                                        Giảm @giamGia VNĐ;
+                                    </p>
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Họ tên
+                            </dt>
+
+                            <dd>
+                                @order.CUSTOMER.CustomerName
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Địa chỉ
+                            </dt>
+
+                            <dd>
+                                @order.CUSTOMER.CustomerAddress
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Liên lạc
+                            </dt>
+
+                            <dd>
+                                @order.CUSTOMER.CustomerPhone<br />
+                                @order.CUSTOMER.CustomerEmail
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Ngày tạo
+                            </dt>
+
+                            <dd>
+                                @order.DateOrder.Value.ToString("dd/MM/yyyy HH:mm")
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Ngày giao
+                            </dt>
+
+                            <dd>
+                                @order.DateOrder.Value.ToString("dd/MM/yyyy")<br />
+                                @order.TimeDelivery.ToString()
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Hình thức thanh toán
+                            </dt>
+
+                            <dd>
+                                @order.PAYMENT_METHOD.PaymentName
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-4">
+                        <dl>
+                            <dt>
+                                Thành tiền
+                            </dt>
+
+                            <dd>
+                                @{
+                                    string thanhTien = String.Format("{0:N0}", order.Total);
+                                }
+                                @thanhTien
+                            </dd>
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="text-right">
+                @if (order.IdStatus == 1 || order.IdStatus == 2)
+                {
+                    <button type="button" onclick="Delivery(@order.IdOrder)" class="btn btn-primary">Chuyển giao hàng</button>
+                    <button type="button" onclick="Deny(@order.IdOrder)" class="btn btn-danger">Từ chối</button>
+                }
+            </div>
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>
+                            Sản phẩm
+                        </th>
+                        <th>
+                            IMEI
+                        </th>
+                        <th>
+                            Giá
+                        </th>
+                        <th>
+                            Giảm
+                        </th>
+                        <th>
+                            Thành tiền
+                        </th>
+                    </tr>
+
+
+
+                    @foreach (var product in order.PRODUCT_ORDER.ToList())
+                    {
+                        string giaSP = String.Format("{0:N0}", product.Price);
+                        string giaGiam = String.Format("{0:N0}", product.Discount);
+                        string giaTong = String.Format("{0:N0}", product.Price - product.Discount);
+
+                        <tr>
+                            <td>
+                                @product.PRODUCT.ProductName
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="product-@product.IdProduct" value="@product.IMEI" maxlength="50" placeholder="Số IMEI">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="button" onclick="UpdateImei(@product.IdProduct)">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @giaSP VNĐ
+                            </td>
+                            <td>
+                                @giaGiam VNĐ
+                            </td>
+                            <td>
+                                @giaTong VNĐ
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>
+                            Ngày giờ
+                        </th>
+                        <th>
+                            Nhân viên
+                        </th>
+                        <th>
+                            Trạng thái chuyển
+                        </th>
+                    </tr>
+
+                    @foreach (var history in order.ORDER_HISTORY.OrderByDescending(x => x.IdHistory).ToList())
+                    {
+                        var ngayGio = history.DateHistory is null ? "Không có thông tin" : history.DateHistory.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                        <tr>
+                            <td>
+                                @ngayGio
+                            </td>
+                            <td>
+                                @history.USER.Fullname
+                            </td>
+                            <td>
+                                @history.PAYMENT_STATUS.StatusName
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}
+
+
+<script>
+    function Deny(id) {
+        if (!confirm("Bạn có thực sự muốn TỪ CHỐI đơn hàng này không?")) return;
+        $.ajax({
+            url: '/Ajax/DenyOrder/' + id,
+            type: 'POST',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Đã từ chối đơn hàng");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Delivery(id) {
+        if (!confirm("Bạn có thực sự muốn GIAO HÀNG đơn hàng này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeliveryOrder/' + id,
+            type: 'POST',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Đã chuyển giao hàng thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+        }
+
+    function UpdateImei(id, imei) {
+        var imei = $("#product-"+id).val();
+        if (!confirm("Bạn có thực sự muốn CẬP NHẬT IMEI này không?")) return;
+            $.ajax({
+                url: '/Ajax/UpdateImei',
+                type: 'POST',
+                data: {
+                    IdProduct: id,
+                    IdOrder: @Model.IdOrder,
+                    IMEI: imei
+                }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Đã cập nhật thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+</script>

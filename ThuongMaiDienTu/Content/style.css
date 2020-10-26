@@ -1,0 +1,93 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Gugi|Roboto|Sofia&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding-top: 56px;
+    padding-bottom: 0px;
+}
+
+.bg-dark {
+    background-color: #fed700 !important;
+}
+
+.navbar-dark .navbar-brand {
+    color: black !important;
+}
+
+.py-5 {
+    background-color: #fed700;
+}
+
+a {
+    color: black !important;
+}
+
+.navbar-nav {
+    padding: 0.8em 0em;
+}
+
+    .navbar-nav .nav-link {
+        font-size: 0.9em;
+        color: var(--light-gray) !important;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        padding: 0 1.3em;
+    }
+
+    .navbar-nav .basket-icon {
+        margin-right: 6.5em !important;
+    }
+
+.blog .carousel-indicators {
+    left: 0;
+    top: auto;
+    bottom: -40px;
+}
+
+.carousel-inner {
+    padding: 20px;
+}
+/* The colour of the indicators */
+.blog .carousel-indicators li {
+    background: #a3a3a3;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+}
+
+.blog .carousel-indicators .active {
+    background: #707070;
+}
+.product_price {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    font-size: 14px;
+    color: #e10c00;
+    line-height: 15px;
+    font-weight: bold;
+}
+.product_sumary {
+    color: #333;
+    line-height: 1.4;
+    float: left;
+ 
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.product_img{
+    width: 180px;
+    height: 180px;
+}
+
+.thongtinchitiet img {
+    width: 100%
+}

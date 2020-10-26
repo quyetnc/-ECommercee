@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách chương trình khuyến mãi</h2>
+
+<div class="text-right">
+    <a role="button" class="btn btn-primary" href="~/Admin/PromotionInfo"><i class="fas fa-plus"></i> Tạo chương trình khuyến mãi</a>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+
+
+            <thead>
+                <tr>
+                    <th scope="col">Tên chương trình</th>
+                    <th scope="col">Bắt đầu</th>
+                    <th scope="col">Kết thúc</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.PROMOTIONs.OrderByDescending(x => x.PromotionStart).ToList())
+                    {
+                        var dateS = (item.PromotionStart ?? DateTime.Now).ToString("dd/MM/yyyy");
+                        var dateE = (item.PromotionEnd ?? DateTime.Now).ToString("dd/MM/yyyy");
+
+                        <tr>
+                            <td>@item.PromotionName</td>
+                            <td>@dateS</td>
+                            <td>@dateE</td>
+                            <th>
+                                <div class="btn-group" role="group">
+                                    <a role="button" class="btn btn-primary" href="/Admin/PromotionInfo/@item.IdPromotion"><i class="fas fa-edit"></i></a>
+                                    <button type="button" class="btn btn-danger" onclick="DeletePromotion(@item.IdPromotion)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+
+
+
+
+    function DeletePromotion(id) {
+        if (!confirm("Bạn có thực sự muốn xóa chương trình khuyến mãi này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeletePromotion/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+</script>

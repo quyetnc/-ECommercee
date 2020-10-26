@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách bình luận</h2>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Điện thoại</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Số đơn hàng</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.CUSTOMERs.ToList())
+                    {
+                <tr>
+                    <td>@item.CustomerName</td>
+                    <td>@item.CustomerAddress</td>
+                    <td>@item.CustomerPhone</td>
+                    <td>@item.CustomerEmail</td>
+                    <td>@item.ORDERs.Count()</td>
+                    <th>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" onclick="DeleteCustomer(@item.IdCustomer)"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </th>
+                </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+   $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+
+
+    function DeleteCustomer(id) {
+        if (!confirm("Bạn có thực sự muốn xóa khách hàng này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteCustomer/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+
+</script>

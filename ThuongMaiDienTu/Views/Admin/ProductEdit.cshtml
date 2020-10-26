@@ -1,0 +1,155 @@
+﻿@model ThuongMaiDienTu.PRODUCT
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="~/Scripts/ckeditor.js"></script>
+
+@using (Html.BeginForm("ProductEdit", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    Html.EnableClientValidation(true);
+
+    if (!String.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+
+    }
+
+    if (!String.IsNullOrEmpty(ViewBag.Success))
+    {
+        <div class="alert alert-primary" role="alert">
+            @ViewBag.Success
+        </div>
+
+    }
+
+    if (ViewBag.Id == null)
+    {
+        @Html.HiddenFor(model => model.IdProduct)
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.IdProduct, new { @Value = @ViewBag.Id })
+    }
+
+    <div class="form-horizontal">
+
+
+        <div class="form-group">
+            <lable class="control-label">Tên sản phẩm</lable>
+            <div>
+                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <lable class="control-label">Giá bán</lable>
+            <div>
+                @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <lable class="control-label">Danh mục</lable>
+            <div>
+                <select name="IdCategory" class="form-control">
+                    @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                    {
+                        foreach (var item in db.CATEGORY_PRODUCT.ToList())
+                        {
+                            <option value="@item.IdCategory">@item.CategoryName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <lable class="control-label">Hình ảnh</lable>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="files" accept="image/*" multiple>
+                <label class="custom-file-label">Hình đầu tiên chọn sẽ là hình mặc định</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <lable class="control-label">Mô tả ngắn</lable>
+            <div>
+                @Html.TextAreaFor(model => model.ProductSumary, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductSumary, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <lable class="control-label">Thông số sản phẩm</lable>
+            <div>
+
+                <table class="table table-striped">
+                    <tbody>
+
+                        @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                        {
+                            int i = 0;
+                            string tieude = "";
+                            foreach (var info in db.INFOes.OrderBy(x => x.InfoCategory).ToList())
+                            {
+                                string thongtin = "";
+                                if (ViewBag.Id != null || Model.IdProduct > 0)
+                                {
+                                    int maSP = ViewBag.Id == null ? Model.IdProduct : (int)ViewBag.Id;
+                                    var thongtinDB = db.PRODUCT_INFO.Where(x => x.IdInfo == info.IdInfo && x.IdProduct == maSP).FirstOrDefault();
+                                    if (thongtinDB != null)
+                                    {
+                                        thongtin = thongtinDB.Info;
+                                    }
+                                }
+
+                                if (!tieude.Equals(info.InfoCategory))
+                                {
+                                    tieude = info.InfoCategory;
+
+                                    <tr>
+                                        <td colspan="2"><b>@tieude</b></td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td>@info.InfoName</td>
+                                    <td>
+                                        <input type="text" maxlength="255" class="form-control" placeholder="Thông tin sản phẩm" name="PRODUCT_INFO[@i].IdInfo" value="@info.IdInfo" hidden>
+                                        <input type="text" maxlength="255" class="form-control" placeholder="Thông tin sản phẩm" name="PRODUCT_INFO[@i].Info" value="@thongtin">
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+
+               
+            </div>
+        </div>
+
+        <div class="form-group">
+            <lable class="control-label">Bài giới thiệu</lable>
+            <div>
+                @Html.TextAreaFor(model => model.ProductDetail, new { @class = "form-control", @id = "ProductDetail" })
+                @Html.ValidationMessageFor(model => model.ProductDetail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-lg btn-primary">Lưu lại</button>
+        </div>
+    </div>
+}
+
+<script>
+    CKEDITOR.replace('ProductDetail');
+</script>

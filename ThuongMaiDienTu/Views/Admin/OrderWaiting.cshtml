@@ -1,0 +1,102 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Mã đơn</th>
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">Giá trị</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    int id1 = ViewBag.Id1;
+                    int id2 = ViewBag.Id2;
+
+                    foreach (var item in db.ORDERs.Where(x => x.IdStatus == id1 || x.IdStatus == id2).ToList())
+                    {
+                        string tongTien = String.Format("{0:N0}", item.Total);
+                        <tr>
+                            <td>@item.IdOrder</td>
+                            <td>@item.CUSTOMER.CustomerName<br />@item.CUSTOMER.CustomerAddress<br />@item.CUSTOMER.CustomerPhone<br />@item.CUSTOMER.CustomerEmail</td>
+                            <td>@tongTien</td>
+                            <th>
+                                <div class="btn-group" role="group">
+                                    <a role="button" class="btn btn-primary" href="/Admin/OrderInfo/@item.IdOrder"><i class="fas fa-eye"></i></a>
+                                    @if (item.IdStatus == 3)
+                                    {
+                                        <button type="button" class="btn btn-success" onclick="Accpet(@item.IdOrder)"><i class="fas fa-check"></i></button>
+                                    }
+                                    @if (item.IdStatus != 4)
+                                    {
+                                        <button type="button" class="btn btn-danger" onclick="Deny(@item.IdOrder)"><i class="fas fa-trash-alt"></i></button>
+                                    }
+
+                                    
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+
+
+    function Deny(id) {
+        if (!confirm("Bạn có thực sự muốn TỪ CHỐI đơn hàng này không?")) return;
+        $.ajax({
+            url: '/Ajax/DenyOrder/' + id,
+            type: 'POST',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Đã từ chối đơn hàng");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function Accpet(id) {
+        if (!confirm("Bạn có thực sự muốn DUYỆT HOÀN THÀNH đơn hàng này không?")) return;
+        $.ajax({
+            url: '/Ajax/AccpetOrder/' + id,
+            type: 'POST',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Đã duyệt hoàn thành đơn hàng");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+</script>
+
+

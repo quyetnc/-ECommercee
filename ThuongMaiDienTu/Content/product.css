@@ -1,0 +1,37 @@
+﻿.tab-group {
+    float: left;
+    display: inline-block;
+    margin-left: 20px;
+}
+a.menu-con {
+    display: inline-block;
+    vertical-align: sub;
+    line-height: 2;
+    border: 1px solid #eee;
+    padding: 5px 10px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 5px;
+    min-width: 50px;
+    margin-bottom: 5px;
+}
+ul {
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.price-filter-link li {
+    display: inline-block;
+    margin-right: 10px;
+    line-height: 35px;
+}
+.col-main {
+    border: 0;
+    margin: 0 0 7px;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    margin: 0 0 25px;
+}

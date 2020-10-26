@@ -1,0 +1,64 @@
+﻿
+@using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+{
+    int id = (int)ViewBag.Id;
+    var info_new = db.NEWS.Where(x => x.IdNews == id).FirstOrDefault();
+    ViewBag.Title = info_new.IdNews;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <link href="~/Content/Tintuc.css" rel="stylesheet" />
+    <div class="container">
+        <br>
+        <nav class="nav nav-piils">
+
+            @foreach (var cateNew in db.CATEGORY_NEWS.ToList())
+            {
+
+                <a class="nav-link active" href="#"><i class="@cateNew.CategoryIcon"></i> @cateNew.CategoryName</a>
+
+            }
+
+        </nav>
+        <hr />
+
+        <div class="row">
+
+
+
+            <h2 class="title-tintuc">
+                @info_new.NewsTitle
+            </h2>
+            <p>
+                <i>Bài viết được viết bời <b>@info_new.USER.Fullname</b></i>
+            </p>
+            <img class="img-tintuc" src="~/img/tintuc/@info_new.NewsThumbail" alt="@info_new.NewsTitle" style="width: 100%">
+            <p class="body-tin">
+                @info_new.NewsDetail
+            </p>
+
+
+        </div>
+        @*<div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    <p class="tinlienquan">Tin liên quan</p>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                            @foreach (var news1 in db.NEWS)
+                            {
+                                <div class="card item-tintuc" style="width: 18rem;">
+                                    <img src="~/assets/so-sanh-4_800x451-300x200.jpg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <p class="card-text">@news1.NewsSumary</p>
+                                    </div>
+                                </div>
+                            }
+
+                    </div>
+                </div>
+                <br>
+            </div>*@
+    </div>
+
+}

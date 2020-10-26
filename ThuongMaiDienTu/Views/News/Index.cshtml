@@ -1,0 +1,60 @@
+﻿@using ThuongMaiDienTu.Helper;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Tintuc.css" rel="stylesheet" />
+<br />
+<div class="container">
+    <h1>Tin tức</h1>
+    <br>
+    <nav class="nav nav-piils">
+        @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+        {
+            foreach (var cateNew in db.CATEGORY_NEWS.ToList())
+            {
+
+                <a class="nav-link active" href="#"><i class="@cateNew.CategoryIcon"></i> @cateNew.CategoryName</a>
+
+            }
+        }
+    </nav>
+
+    <hr />
+
+    <div class="row">
+
+        @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+        {
+            foreach (var news in db.NEWS.ToList())
+            {
+                string link = "/tin-tuc/"+ RemoveVietnamese.RemoveSign4VietnameseString(news.NewsTitle).Replace(" ", "-")+"-"+news.IdNews;
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="~/img/tintuc/@news.NewsThumbail" class="card-img-top" alt="@news.NewsTitle">
+                    </div>
+                </div>
+
+                <div class="col-9">
+                    <div class="card-body">
+                        <a href="@link" >
+                        <h5 class="card-title">
+                            @news.NewsTitle
+                        </h5>
+                        </a>
+                        <h4 class="card-price">
+                            @news.NewsSumary
+                        </h4>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+    <br>
+
+</div>
+<br>
+<a href="#" class="viewmore">Xem thêm</a>
+

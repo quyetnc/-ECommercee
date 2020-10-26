@@ -1,0 +1,156 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+<h2>Danh sách danh mục bài viết</h2>
+
+<div class="text-right">
+    <button type="button" class="btn btn-primary" onclick="CreateNewInfo()"><i class="fas fa-plus"></i> Tạo thông tin</button>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">Danh mục</th>
+                    <th scope="col">Tên thông tin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
+                {
+                    foreach (var item in db.INFOes.OrderBy(x => x.InfoCategory).ToList())
+                    {
+                        <tr>
+                            <td>@item.InfoCategory</td>
+                            <td>@item.InfoName</td>
+                            <th>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary" onclick="EditInfo(@item.IdInfo)"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteInfo(@item.IdInfo)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div id="create-info-model" class="modal fade create-info-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin danh mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label">Tên thông tin</label>
+                        <input type="text" class="form-control" name="md-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Danh mục</label>
+                        <input type="text" class="form-control" name="md-category">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+
+    var id_info = 0;
+    function EditInfo(id) {
+        id_info = id;
+
+        $.ajax({
+            url: '/Ajax/GetProductInfo/' + id,
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                id: id_info,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("[name='md-category']").val(json.Category);
+            $("[name='md-name']").val(json.Name);
+            $('#create-info-model').modal('show');
+        });
+
+    }
+
+    function DeleteInfo(id) {
+        if (!confirm("Bạn có thực sự muốn xóa thông tin này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteProductInfo/' + id,
+            type: 'DELETE',
+            dataType: 'text'
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Xóa thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+    }
+
+    function CreateNewInfo() {
+        id_info = 0;
+        $("[name='md-category']").val("");
+        $("[name='md-name']").val("");
+        $('#create-info-model').modal('show');
+    }
+
+    function SaveInfo() {
+        var name = $("[name='md-name']").val();
+        var category = $("[name='md-category']").val();
+        if (name == '' || category == '') {
+            alert('Vui lòng nhập đủ thông tin');
+            return;
+        }
+
+
+
+        $.ajax({
+            url: '/Ajax/EditProductInfo',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                IdInfo: id_info,
+                InfoName: name,
+                InfoCategory: category
+            }
+        }).done(function (ketqua) {
+            if (ketqua == "ok") {
+                alert("Lưu dữ liệu thành công");
+                location.reload();
+                return;
+            }
+            alert(ketqua);
+        });
+
+    }
+</script>
