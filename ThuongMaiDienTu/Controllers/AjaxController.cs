@@ -603,7 +603,7 @@ namespace ThuongMaiDienTu.Controllers
 
         public JsonResult GetCategory(int id)
         {
-            if (Session["login"] is null) return null;
+            //if (Session["login"] is null) return null;
             using (THUONGMAIDIENTUEntities db = new THUONGMAIDIENTUEntities())
             {
                 var categoryDB = db.CATEGORY_PRODUCT.Where(x => x.IdCategory == id).FirstOrDefault();
@@ -611,7 +611,7 @@ namespace ThuongMaiDienTu.Controllers
                 return new JsonResult()
                 {
                     Data = new { Name = categoryDB.CategoryName, Icon = categoryDB.CategoryIcon },
-                    JsonRequestBehavior = JsonRequestBehavior.DenyGet
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
             }
         }
